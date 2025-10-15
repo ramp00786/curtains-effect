@@ -5,8 +5,11 @@
  * Facebook: https://www.facebook.com/ramp00786
  */
 
-import CurtainEffect from './CurtainEffect.jsx';
-import './CurtainEffect.css';
+import CurtainEffect from './CurtainEffectStandalone.jsx';
+
+// This version includes inline styles to avoid CSS import issues with Vite
+// For custom styling, you can still import the CSS separately:
+// import 'curtain-opening-effect/react/css';
 
 // Additional React hooks for advanced usage
 import { useEffect, useRef, useState, useCallback } from 'react';

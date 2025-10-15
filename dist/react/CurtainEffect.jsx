@@ -9,7 +9,6 @@
  */
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import './CurtainEffect.css';
 
 const CurtainEffect = React.forwardRef(({
   title = "Welcome",
