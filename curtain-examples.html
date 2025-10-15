@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎭 Curtain Opening Effect - Reusable CSS & JavaScript | Live Demo</title>
+    <meta name="description"
+        content="Beautiful, reusable curtain opening animation for any website. 5 themes, custom images, sound effects, mobile responsive. Pure CSS & JavaScript - No dependencies.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="curtain-assets/css/curtain-effect.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .example-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .example-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .example-card h3 {
+            margin-bottom: 15px;
+            color: #FFD700;
+        }
+
+        .example-card p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .demo-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .demo-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .code-section {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(40, 40, 40, 0.9));
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-section h2 {
+            color: #4FC3F7;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-section h3 {
+            color: #81C784;
+            margin: 25px 0 15px 0;
+            font-size: 1.3rem;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: auto;
+            border: 1px solid #333;
+            position: relative;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #007ACC, #4FC3F7, #81C784);
+            border-radius: 8px 8px 0 0;
+        }
+
+        /* Syntax highlighting */
+        .code-block .comment {
+            color: #6A9955;
+            font-style: italic;
+        }
+
+        .code-block .keyword {
+            color: #569CD6;
+            font-weight: bold;
+        }
+
+        .code-block .string {
+            color: #CE9178;
+        }
+
+        .code-block .function {
+            color: #DCDCAA;
+        }
+
+        .code-block .property {
+            color: #9CDCFE;
+        }
+
+        .code-block .tag {
+            color: #4FC3F7;
+        }
+
+        .code-block .attribute {
+            color: #92C5F7;
+        }
+
+        .code-block .value {
+            color: #CE9178;
+        }
+
+        .code-block .operator {
+            color: #D4D4D4;
+        }
+
+        .code-block .number {
+            color: #B5CEA8;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .feature-item i {
+            font-size: 1.5rem;
+            color: #FFD700;
+            margin-right: 15px;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .badge {
+            background: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .github-link {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .github-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .github-link i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎭 Curtain Opening Effect</h1>
+            <p>Beautiful, reusable curtain animation for any website - Pure CSS & JavaScript</p>
+            <div class="badges" style="margin: 20px 0;">
+                <span class="badge">✨ 5 Themes</span>
+                <span class="badge">📱 Mobile Responsive</span>
+                <span class="badge">🎵 Sound Effects</span>
+                <span class="badge">⚡ Zero Dependencies</span>
+            </div>
+            <a href="https://github.com/ramp00786/curtains-effect-js-and-css" target="_blank" class="github-link">
+                <i class="fab fa-github"></i> View on GitHub
+            </a>
+        </div>
+
+        <div class="examples">
+            <div class="example-card">
+                <h3>🎪 Basic Example</h3>
+                <p>Simple curtain effect with default styling and manual trigger button.</p>
+                <button class="demo-btn" onclick="basicExample()">
+                    <i class="fas fa-play"></i> Try Basic
+                </button>
+            </div>
+
+            <div class="example-card">
+                <h3>👑 Royal Theme</h3>
+                <p>Elegant purple curtains with royal styling, perfect for premium websites.</p>
+                <button class="demo-btn" onclick="royalExample()">
+                    <i class="fas fa-crown"></i> Try Royal
+                </button>
+            </div>
+
+            <div class="example-card">
+                <h3>✨ Gold Theme</h3>
+                <p>Luxurious golden curtains with sparkle effects for special occasions.</p>
+                <button class="demo-btn" onclick="goldExample()">
+                    <i class="fas fa-star"></i> Try Gold
+                </button>
+            </div>
+
+            <div class="example-card">
+                <h3>🧡 Saffron Theme</h3>
+                <p>Vibrant saffron-colored curtains with warm orange-golden gradients, perfect for Indian festivals.</p>
+                <button class="demo-btn" onclick="saffronExample()">
+                    <i class="fas fa-fire"></i> Try Saffron
+                </button>
+            </div>
+
+            <div class="example-card">
+                <h3>💎 Elegant Theme</h3>
+                <p>Sophisticated gray-blue curtains with elegant styling for professional websites and corporate
+                    presentations.</p>
+                <button class="demo-btn" onclick="elegantExample()">
+                    <i class="fas fa-gem"></i> Try Elegant
+                </button>
+            </div>
+
+            <div class="example-card">
+                <h3>🖼️ Custom Images</h3>
+                <p>Use your own curtain images for personalized branding and unique visual effects.</p>
+                <button class="demo-btn" onclick="customImageExample()">
+                    <i class="fas fa-image"></i> Try Images
+                </button>
+            </div>
+
+            <div class="example-card">
+                <h3>⚡ Speed Control</h3>
+                <p>Adjust animation speed from fast (1s) to slow (10s) for perfect timing control.</p>
+                <button class="demo-btn" onclick="speedExample()">
+                    <i class="fas fa-tachometer-alt"></i> Try Speed
+                </button>
+            </div>
+
+            <div class="example-card">
+                <h3>🎵 With Sound</h3>
+                <p>Enhanced experience with clapping sound effects during curtain opening animation.</p>
+                <button class="demo-btn" onclick="soundExample()">
+                    <i class="fas fa-volume-up"></i> Try Sound
+                </button>
+            </div>
+
+            <div class="example-card">
+                <h3>⏰ Auto Open</h3>
+                <p>Automatically opens after 3 seconds - great for splash screens.</p>
+                <button class="demo-btn" onclick="autoExample()">
+                    <i class="fas fa-clock"></i> Try Auto
+                </button>
+            </div>
+
+            <div class="example-card">
+                <h3>🎨 Custom Content</h3>
+                <p>Personalized title, subtitle, and button text for your brand.</p>
+                <button class="demo-btn" onclick="customExample()">
+                    <i class="fas fa-edit"></i> Try Custom
+                </button>
+            </div>
+        </div>
+
+        <!-- Real-World Use Cases Section -->
+        <div class="use-cases-section" style="margin: 40px 0;">
+            <h2 style="text-align: center; color: #FFD700; margin-bottom: 30px; font-size: 2.5rem;">🎯 Real-World Use
+                Cases</h2>
+            <div class="examples">
+                <div class="example-card">
+                    <h3>🛒 E-commerce Sale</h3>
+                    <p>Perfect for announcing Black Friday sales, special offers, and limited-time promotions.</p>
+                    <button class="demo-btn" onclick="ecommerceExample()">
+                        <i class="fas fa-shopping-cart"></i> Try Sale Page
+                    </button>
+                </div>
+                <div class="example-card">
+                    <h3>🎭 Event Landing</h3>
+                    <p>Ideal for conferences, festivals, concerts, and special events with dramatic entrance.</p>
+                    <button class="demo-btn" onclick="eventExample()">
+                        <i class="fas fa-calendar-star"></i> Try Event Page
+                    </button>
+                </div>
+                <div class="example-card">
+                    <h3>💼 Portfolio Site</h3>
+                    <p>Make a memorable first impression for personal portfolios and creative showcases.</p>
+                    <button class="demo-btn" onclick="portfolioExample()">
+                        <i class="fas fa-briefcase"></i> Try Portfolio
+                    </button>
+                </div>
+                <div class="example-card">
+                    <h3>🍽️ Restaurant</h3>
+                    <p>Elegant dining experience introduction with auto-redirect to reservation system.</p>
+                    <button class="demo-btn" onclick="restaurantExample()">
+                        <i class="fas fa-utensils"></i> Try Restaurant
+                    </button>
+                </div>
+                <div class="example-card">
+                    <h3>🎮 Gaming Site</h3>
+                    <p>Dramatic game reveals and launches with custom branding and sound effects.</p>
+                    <button class="demo-btn" onclick="gamingExample()">
+                        <i class="fas fa-gamepad"></i> Try Gaming
+                    </button>
+                </div>
+                <div class="example-card">
+                    <h3>🏛️ Cultural Event</h3>
+                    <p>Perfect for museums, art galleries, and cultural celebrations with saffron theme.</p>
+                    <button class="demo-btn" onclick="culturalExample()">
+                        <i class="fas fa-landmark"></i> Try Cultural
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-section">
+            <h2>📋 Quick Start Guide (for Beginners)</h2>
+
+            <div
+                style="background: rgba(255, 193, 7, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0; border: 2px solid #FFC107;">
+                <h3 style="color: #FF9800; margin: 0 0 15px 0;">🚀 2-Minute Setup</h3>
+                <p style="margin: 0; font-size: 16px; line-height: 1.6;">Follow these 2 simple steps to add curtain
+                    effect to your website:</p>
+                <ul style="margin: 10px 0 0 20px; font-size: 16px;">
+                    <li><strong>Step 1:</strong> Copy-paste the code (curtain works automatically)</li>
+                    <li><strong>Step 2:</strong> Customize colors, text, speed (optional)</li>
+                </ul>
+            </div>
+
+            <h3>1. Download Required Files</h3>
+            <div class="code-block">
+                <span class="comment">&lt;!-- Include CSS --&gt;</span><br />
+                <span class="tag">&lt;link</span> <span class="attribute">rel</span>=<span
+                    class="string">"stylesheet"</span> <span class="attribute">href</span>=<span
+                    class="string">"path/to/curtain-effect.css"</span><span class="tag">&gt;</span>
+                <br />
+                <span class="comment">&lt;!-- Include Font Awesome for icons --&gt;</span>
+                <br />
+                <span class="tag">&lt;link</span> <span class="attribute">rel</span>=<span
+                    class="string">"stylesheet"</span> <span class="attribute">href</span>=<span
+                    class="string">"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"</span><span
+                    class="tag">&gt;</span>
+                <br />
+                <span class="comment">&lt;!-- Include JavaScript --&gt;</span>
+                <br />
+                <span class="tag">&lt;script</span> <span class="attribute">src</span>=<span
+                    class="string">"path/to/curtain-effect.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+            </div>
+
+            <h3>2. STEP 1: Add Basic Curtain Effect (Copy-Paste Ready)</h3>
+            <div class="code-block">
+                <span class="comment">&lt;!-- Add this to your HTML file BEFORE closing &lt;/body&gt; tag --&gt;</span>
+                <br />
+
+                <span class="comment">&lt;!-- Curtain Effect CSS --&gt;</span><br />
+                <span class="tag">&lt;link</span> <span class="attribute">rel</span>=<span
+                    class="string">"stylesheet"</span> <span class="attribute">href</span>=<span
+                    class="string">"curtain-assets/css/curtain-effect.css"</span><span class="tag">&gt;</span>
+
+                <br />
+
+                <span class="comment">&lt;!-- Curtain Effect JavaScript --&gt;</span>
+                <br />
+                <span class="tag">&lt;script</span> <span class="attribute">src</span>=<span
+                    class="string">"curtain-assets/js/curtain-effect.js"</span><span
+                    class="tag">&gt;&lt;/script&gt;</span>
+
+                <br />
+                <span class="comment">&lt;!-- Basic Configuration (Required) --&gt;</span>
+                <br />
+                <span class="tag">&lt;script&gt;</span><br />
+                &nbsp;&nbsp;&nbsp;<span class="comment">// Set curtain configuration</span><br />
+                &nbsp;&nbsp;&nbsp;<span class="property">window</span>.<span class="property">curtainConfig</span> = {
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">title</span>: <span class="string">'Welcome
+                    to My Website'</span>,<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">subtitle</span>: <span class="string">'Click
+                    to explore amazing content'</span>,<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">buttonText</span>: <span
+                    class="string">'Enter Now'</span><br />
+                &nbsp;&nbsp;&nbsp;};<br />
+                <span class="tag">&lt;/script&gt;</span>
+            </div>
+            <div
+                style="background: rgba(76, 175, 80, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #4CAF50;">
+                <strong>✅ That's it! Your curtain effect is ready.</strong><br>
+                Just add the above code to your HTML file and the curtain will automatically appear when page loads.
+            </div>
+
+            <h3>3. STEP 2: Customize Your Curtain (Optional)</h3>
+            <div
+                style="background: rgba(33, 150, 243, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #2196F3;">
+                <strong>📝 Want to customize? Simply modify the window.curtainConfig object:</strong>
+            </div>
+            <div class="code-block">
+                <span class="comment">&lt;!-- Replace the basic configuration with this customized version
+                    --&gt;</span><br />
+                <span class="tag">&lt;script&gt;</span><br />
+                &nbsp;&nbsp;&nbsp;<span class="property">window</span>.<span class="property">curtainConfig</span> =
+                {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Basic Content</span><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">title</span>: <span class="string">'IISF
+                    2025'</span>,<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">subtitle</span>: <span class="string">'India
+                    International Science
+                    Festival'</span>,<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">buttonText</span>: <span
+                    class="string">'Enter Festival'</span>,<br />
+
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Theme Options: 'default', 'royal',
+                    'elegant', 'gold', 'saffron'</span><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">theme</span>: <span
+                    class="string">'saffron'</span>,
+                <br />
+
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Animation Speed (1000 = 1 second, 5000 = 5
+                    seconds)</span><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">speed</span>: <span
+                    class="number">2000</span>,<br />
+
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Effects</span><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">sparkles</span>: <span
+                    class="keyword">true</span>, <span class="comment">// Show
+                    falling sparkles</span><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">sound</span>: <span
+                    class="keyword">true</span>, <span class="comment">// Play
+                    clapping sound</span><br />
+
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Auto Opening</span><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">autoOpen</span>: <span
+                    class="keyword">false</span>, <span class="comment">// Set
+                    true to auto-open</span><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">autoOpenDelay</span>: <span
+                    class="number">3000</span>, <span class="comment">//
+                    Wait 3 seconds before auto-open</span><br />
+
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Custom Images (Optional)</span><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">leftCurtainImage</span>: <span
+                    class="string">'path/to/left-curtain.jpg'</span>,<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">rightCurtainImage</span>: <span
+                    class="string">'path/to/right-curtain.jpg'</span>,<br />
+
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Callback Functions</span><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">onComplete</span>: <span
+                    class="keyword">function</span>() {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function">console</span>.<span
+                    class="function">log</span>(<span class="string">'Welcome to
+                    the website!'</span>);<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                &nbsp;&nbsp;&nbsp;};<br />
+                <span class="tag">&lt;/script&gt;</span>
+            </div>
+
+            <h3>4. Alternative Method: HTML Data Attributes</h3>
+            <div
+                style="background: rgba(156, 39, 176, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #9C27B0;">
+                <strong>💡 Advanced users can also use HTML attributes instead of window.curtainConfig:</strong>
+            </div>
+            <div class="code-block">
+                <span class="comment">&lt;!-- Add this div anywhere in your HTML body --&gt;</span><br />
+                <span class="tag">&lt;div</span> <span class="attribute">data-curtain-auto</span>=<span
+                    class="string">"true"</span>
+                <span class="attribute">data-curtain-title</span>=<span class="string">"My Website"</span>
+                <span class="attribute">data-curtain-subtitle</span>=<span class="string">"Welcome!"</span>
+                <span class="attribute">data-curtain-button</span>=<span class="string">"Enter"</span>
+                <span class="attribute">data-curtain-theme</span>=<span class="string">"saffron"</span>
+                <span class="attribute">data-curtain-speed</span>=<span class="string">"2000"</span>
+                <span class="attribute">data-curtain-sparkles</span>=<span class="string">"true"</span>
+                <span class="attribute">data-curtain-sound</span>=<span class="string">"false"</span><span
+                    class="tag">&gt;</span>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+
+            <h3>5. Available Options & What They Do</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <i class="fas fa-text-width"></i>
+                    <div>
+                        <strong>title:</strong> 'Welcome' - Main heading text displayed on curtains
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-align-center"></i>
+                    <div>
+                        <strong>subtitle:</strong> 'Click to Enter' - Secondary descriptive text
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-mouse-pointer"></i>
+                    <div>
+                        <strong>buttonText:</strong> 'Open Curtains' - Text shown on the action button
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-palette"></i>
+                    <div>
+                        <strong>theme:</strong> 'default' | 'royal' | 'elegant' | 'gold' | 'saffron' - Visual style
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <strong>autoOpen:</strong> false - Set true to auto-open without user interaction
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-stopwatch"></i>
+                    <div>
+                        <strong>autoOpenDelay:</strong> 5000 - Delay in milliseconds before auto-opening
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <div>
+                        <strong>speed:</strong> 2000 - Animation duration in milliseconds (1000-10000)
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-sparkles"></i>
+                    <div>
+                        <strong>sparkles:</strong> true - Enable floating particle effects
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-volume-up"></i>
+                    <div>
+                        <strong>sound:</strong> false - Play clapping sound during opening
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-image"></i>
+                    <div>
+                        <strong>leftCurtainImage:</strong> '' - Path to custom left curtain image
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-images"></i>
+                    <div>
+                        <strong>rightCurtainImage:</strong> '' - Path to custom right curtain image
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-play"></i>
+                    <div>
+                        <strong>onOpen:</strong> null - Callback function when curtains start opening
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <div>
+                        <strong>onComplete:</strong> null - Callback function when animation completes
+                    </div>
+                </div>
+            </div>
+
+            <h3>6. Callback Functions</h3>
+            <div class="code-block">
+                <span class="function">CurtainEffect</span>.<span class="function">init</span>({<br />
+                &nbsp;&nbsp;&nbsp;<span class="property">onOpen</span>: <span class="keyword">function</span>() {<br />
+                &nbsp;&nbsp;&nbsp;<span class="function">console</span>.<span class="function">log</span>(<span
+                    class="string">'Curtains
+                    are opening!'</span>);<br />
+                &nbsp;&nbsp;&nbsp;<span class="comment">// Your code here</span><br />
+                &nbsp;&nbsp;&nbsp;},<br />
+                &nbsp;&nbsp;&nbsp;<span class="property">onComplete</span>: <span class="keyword">function</span>()
+                {<br />
+                &nbsp;&nbsp;&nbsp;<span class="function">console</span>.<span class="function">log</span>(<span
+                    class="string">'Animation
+                    completed!'</span>);<br />
+                &nbsp;&nbsp;&nbsp;<span class="comment">// Your code here</span><br />
+                &nbsp;&nbsp;&nbsp;}<br />
+                });
+            </div>
+
+            <h3>7. Available Themes & Their Colors</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <i class="fas fa-palette" style="color: #8B0000;"></i>
+                    <div>
+                        <strong>default:</strong> Deep red gradient with brown tones - Classic curtain look
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-crown" style="color: #6A0DAD;"></i>
+                    <div>
+                        <strong>royal:</strong> Purple gradient from deep violet to lavender - Premium elegance
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-gem" style="color: #708090;"></i>
+                    <div>
+                        <strong>elegant:</strong> Gray-blue gradient from dark slate to light steel - Professional
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-star" style="color: #FFD700;"></i>
+                    <div>
+                        <strong>gold:</strong> Golden gradient from dark gold to bright yellow - Luxurious
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-fire" style="color: #FF8C00;"></i>
+                    <div>
+                        <strong>saffron:</strong> Vibrant orange gradient with golden tones - Indian festival style
+                    </div>
+                </div>
+            </div>
+
+            <h3>8. CSS Structure & Customization</h3>
+            <div class="code-block">
+                <span class="comment">/* Main curtain container - Full viewport coverage */</span><br />
+                <span class="tag">.curtain-container</span> {<br />
+                &nbsp;&nbsp;&nbsp;<span class="property">position</span>: <span class="value">fixed</span>;<span
+                    class="comment">/* Covers entire screen */</span><br />
+                &nbsp;&nbsp;&nbsp;<span class="property">z-index</span>: <span class="number">10000</span>;<span
+                    class="comment">/* Above all content */</span><br />
+                &nbsp;&nbsp;&nbsp;<span class="property">width</span>: <span class="value">100vw</span>;<br />
+                &nbsp;&nbsp;&nbsp;<span class="property">height</span>: <span class="value">100vh</span>;<br />
+                }<br />
+                <br />
+                <span class="comment">/* Individual curtain panels - Split screen effect */</span><br />
+                <span class="tag">.curtain-panel</span> {<br />
+                &nbsp;&nbsp;&nbsp;<span class="property">width</span>: <span class="value">50vw</span>;<span
+                    class="comment">/* Each panel is half viewport width */</span><br />
+                &nbsp;&nbsp;&nbsp;<span class="property">transition</span>: <span class="value">transform
+                    2s</span>;<span class="comment">/* Smooth opening animation */</span><br />
+                &nbsp;&nbsp;&nbsp;<span class="property">background</span>: <span
+                    class="function">linear-gradient</span>(<span class="value">...</span>);<span class="comment">/*
+                    Theme-based colors */</span><br />
+                }<br />
+                <br />
+                <span class="comment">/* Content box - Centered overlay with title/button */</span><br />
+                <span class="tag">.curtain-content-box</span> {<br />
+                &nbsp;&nbsp;&nbsp;<span class="property">position</span>: <span class="value">absolute</span>;<br />
+                &nbsp;&nbsp;&nbsp;<span class="property">top</span>: <span class="value">50%</span>;<br />
+                &nbsp;&nbsp;&nbsp;<span class="property">left</span>: <span class="value">50%</span>;<br />
+                &nbsp;&nbsp;&nbsp;<span class="property">transform</span>: <span class="function">translate</span>(<span
+                    class="value">-50%, -50%</span>);<span class="comment">/* Perfect centering */</span><br />
+                &nbsp;&nbsp;&nbsp;<span class="property">z-index</span>: <span class="number">10002</span>;<span
+                    class="comment">/* Above curtain panels */</span><br />
+                }<br />
+                <br />
+                <span class="comment">/* Theme classes - Override default colors */</span><br />
+                <span class="tag">.curtain-theme-saffron .curtain-panel</span> {<br />
+                &nbsp;&nbsp;&nbsp;<span class="property">background</span>: <span
+                    class="function">linear-gradient</span>(<span class="value">45deg</span>,<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="value">#FF8C00</span>, <span
+                    class="value">#FF7F00</span>, <span class="value">#FF6347</span>,<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="value">#FFA500</span>, <span
+                    class="value">#FFD700</span>, <span class="value">#E68900</span>);<br />
+                }
+            </div>
+
+            <h3>9. Manual Control & Advanced Usage</h3>
+            <div class="code-block">
+                <span class="comment">// Open curtains programmatically</span><br />
+                <span class="function">CurtainEffect</span>.<span class="function">forceOpen</span>();<br />
+                <br />
+                <span class="comment">// Change content dynamically</span><br />
+                <span class="function">CurtainEffect</span>.<span class="function">setTitle</span>(<span
+                    class="string">'New Title'</span>);<br />
+                <span class="function">CurtainEffect</span>.<span class="function">setSubtitle</span>(<span
+                    class="string">'New Subtitle'</span>);<br />
+                <span class="function">CurtainEffect</span>.<span class="function">setButtonText</span>(<span
+                    class="string">'New Button Text'</span>);<br />
+                <span class="function">CurtainEffect</span>.<span class="function">setTheme</span>(<span
+                    class="string">'saffron'</span>);<span class="comment">// Change theme</span><br />
+                <span class="function">CurtainEffect</span>.<span class="function">setCurtainImages</span>(<span
+                    class="string">'left.jpg'</span>, <span class="string">'right.jpg'</span>);<br />
+                <br />
+                <span class="comment">// Check status</span><br />
+                <span class="keyword">if</span> (<span class="function">CurtainEffect</span>.<span
+                    class="function">isOpened</span>()) {<br />
+                &nbsp;&nbsp;&nbsp;<span class="function">console</span>.<span class="function">log</span>(<span
+                    class="string">'Curtains are open'</span>);<br />
+                }<br />
+                <br />
+                <span class="comment">// Clean up and remove</span><br />
+                <span class="function">CurtainEffect</span>.<span class="function">destroy</span>();
+            </div>
+
+            <h3>10. Performance & Browser Support</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <i class="fas fa-rocket"></i>
+                    <div>
+                        <strong>Pure CSS/JS:</strong> No external dependencies, lightweight (~15KB total)
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-mobile-alt"></i>
+                    <div>
+                        <strong>Responsive:</strong> Adapts to all screen sizes with optimized mobile layouts
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-browser"></i>
+                    <div>
+                        <strong>Compatible:</strong> Works in all modern browsers (Chrome, Firefox, Safari, Edge)
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-bolt"></i>
+                    <div>
+                        <strong>Hardware Accelerated:</strong> Uses CSS transforms for smooth 60fps animations
+                    </div>
+                </div>
+            </div>
+
+            <h3>11. Real-World Usage Examples</h3>
+            <div class="code-block">
+    <span class="comment">// E-commerce Website Welcome</span><br/>
+    <span class="function">CurtainEffect</span>.<span class="function">init</span>({<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">title</span>: <span class="string">'Black Friday Sale'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">subtitle</span>: <span class="string">'50% Off Everything - Limited Time!'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">buttonText</span>: <span class="string">'Shop Now'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">theme</span>: <span class="string">'gold'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">autoOpen</span>: <span class="keyword">true</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">autoOpenDelay</span>: <span class="number">2000</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">speed</span>: <span class="number">1500</span><br/>
+    });<br/>
+    <br/>
+    <span class="comment">// Event Landing Page</span><br/>
+    <span class="function">CurtainEffect</span>.<span class="function">init</span>({<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">title</span>: <span class="string">'IISF 2025'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">subtitle</span>: <span class="string">'India International Science Festival'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">buttonText</span>: <span class="string">'Enter Festival'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">theme</span>: <span class="string">'saffron'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">leftCurtainImage</span>: <span class="string">'images/indian-flag-left.jpg'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">rightCurtainImage</span>: <span class="string">'images/indian-flag-right.jpg'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">sparkles</span>: <span class="keyword">true</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">sound</span>: <span class="keyword">true</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">speed</span>: <span class="number">3000</span><br/>
+    });<br/>
+    <br/>
+    <span class="comment">// Portfolio Website</span><br/>
+    <span class="function">CurtainEffect</span>.<span class="function">init</span>({<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">title</span>: <span class="string">'John Doe'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">subtitle</span>: <span class="string">'Creative Web Developer'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">buttonText</span>: <span class="string">'View Portfolio'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">theme</span>: <span class="string">'elegant'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">sparkles</span>: <span class="keyword">false</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">speed</span>: <span class="number">2500</span><br/>
+    });<br/>
+    <br/>
+    <span class="comment">// Restaurant Website</span><br/>
+    <span class="function">CurtainEffect</span>.<span class="function">init</span>({<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">title</span>: <span class="string">'Fine Dining Experience'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">subtitle</span>: <span class="string">'Reserve your table today'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">buttonText</span>: <span class="string">'Make Reservation'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">theme</span>: <span class="string">'royal'</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">autoOpen</span>: <span class="keyword">true</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">autoOpenDelay</span>: <span class="number">4000</span>,<br/>
+    &nbsp;&nbsp;&nbsp;<span class="property">onComplete</span>: <span class="keyword">function</span>() {<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Redirect to booking page</span><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">window</span>.<span class="property">location</span>.<span class="property">href</span> = <span class="string">'/reservations'</span>;<br/>
+    &nbsp;&nbsp;&nbsp;}<br/>
+    });
+</div>
+
+            <h3>12. Browser Support & Performance</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <i class="fab fa-chrome" style="color: #4285F4;"></i>
+                    <div>
+                        <strong>Chrome 60+:</strong> Full support with hardware acceleration
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fab fa-firefox" style="color: #FF9500;"></i>
+                    <div>
+                        <strong>Firefox 55+:</strong> Complete compatibility with smooth animations
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fab fa-safari" style="color: #006CFF;"></i>
+                    <div>
+                        <strong>Safari 12+:</strong> iOS and macOS support with touch optimization
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fab fa-edge" style="color: #0078D4;"></i>
+                    <div>
+                        <strong>Edge 79+:</strong> Modern Chromium-based Edge full support
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-mobile-alt" style="color: #34A853;"></i>
+                    <div>
+                        <strong>Mobile:</strong> Optimized for touch devices with responsive design
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-tachometer-alt" style="color: #FFD700;"></i>
+                    <div>
+                        <strong>Performance:</strong> ~15KB total, 60fps animations, hardware accelerated
+                    </div>
+                </div>
+            </div>
+
+            <h3>13. Troubleshooting & Common Issues</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <i class="fas fa-exclamation-triangle" style="color: #FFA500;"></i>
+                    <div>
+                        <strong>Curtains not showing:</strong> Check that CSS and JS files are properly linked and
+                        loaded
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-volume-mute" style="color: #FFA500;"></i>
+                    <div>
+                        <strong>Sound not playing:</strong> Browsers block autoplay - user interaction required first
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-mobile-alt" style="color: #FFA500;"></i>
+                    <div>
+                        <strong>Mobile issues:</strong> Ensure viewport meta tag is set for proper mobile rendering
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-image" style="color: #FFA500;"></i>
+                    <div>
+                        <strong>Images not loading:</strong> Check image paths are correct and accessible from your
+                        domain
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-layer-group" style="color: #FFA500;"></i>
+                    <div>
+                        <strong>Z-index conflicts:</strong> Curtain uses z-index 10000+ - adjust if needed
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-scroll" style="color: #FFA500;"></i>
+                    <div>
+                        <strong>Scroll blocked:</strong> Body overflow is hidden during curtains - this is intentional
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="curtain-assets/js/curtain-effect.js"></script>
+    <script>
+        function basicExample() {
+            CurtainEffect.init({
+                title: 'Basic Example',
+                subtitle: 'Simple and clean curtain effect',
+                buttonText: 'Open Curtains'
+            });
+        }
+
+        function royalExample() {
+            CurtainEffect.init({
+                title: 'Royal Theatre',
+                subtitle: 'Experience premium elegance',
+                buttonText: 'Enter Royal Hall',
+                theme: 'royal',
+                sparkles: true
+            });
+        }
+
+        function goldExample() {
+            CurtainEffect.init({
+                title: 'Golden Palace',
+                subtitle: 'Luxury awaits behind these curtains',
+                buttonText: 'Unveil Luxury',
+                theme: 'gold',
+                sparkles: true
+            });
+        }
+
+        function soundExample() {
+            CurtainEffect.init({
+                title: 'Sound Experience',
+                subtitle: 'Listen to the curtains opening',
+                buttonText: 'Play with Sound',
+                sound: true,
+                sparkles: true
+            });
+        }
+
+        function autoExample() {
+            CurtainEffect.init({
+                title: 'Auto Opening',
+                subtitle: 'Will open automatically in 3 seconds',
+                buttonText: 'Or Click Here',
+                autoOpen: true,
+                autoOpenDelay: 3000,
+                theme: 'elegant'
+            });
+        }
+
+        function customExample() {
+            CurtainEffect.init({
+                title: 'IISF 2025',
+                subtitle: 'India International Science Festival',
+                buttonText: 'Enter Festival',
+                theme: 'royal',
+                sparkles: true,
+                onComplete: function () {
+                    alert('Welcome to IISF 2025! 🎉');
+                }
+            });
+        }
+
+        function saffronExample() {
+            CurtainEffect.init({
+                title: 'Saffron Theme',
+                subtitle: 'Vibrant orange-golden curtains',
+                buttonText: 'Experience Saffron',
+                theme: 'saffron',
+                sparkles: true,
+                speed: 1500
+            });
+        }
+
+        function elegantExample() {
+            CurtainEffect.init({
+                title: 'Elegant Theme',
+                subtitle: 'Sophisticated gray-blue styling',
+                buttonText: 'Enter Elegantly',
+                theme: 'elegant',
+                sparkles: false,
+                speed: 3000
+            });
+        }
+
+        function customImageExample() {
+            CurtainEffect.init({
+                title: 'Custom Images',
+                subtitle: 'Your own curtain textures',
+                buttonText: 'Reveal Custom',
+                leftCurtainImage: 'curtain-assets/images/left-curtain.jpg',
+                rightCurtainImage: 'curtain-assets/images/right-curtain.jpg',
+                sparkles: true
+            });
+        }
+
+        function speedExample() {
+            CurtainEffect.init({
+                title: 'Speed Control',
+                subtitle: 'Fast opening animation (1 second)',
+                buttonText: 'Quick Open',
+                theme: 'gold',
+                speed: 1000,
+                sparkles: true
+            });
+        }
+
+        // Real-World Use Case Examples
+        function ecommerceExample() {
+            CurtainEffect.init({
+                title: 'Black Friday Sale',
+                subtitle: '50% Off Everything - Limited Time Only!',
+                buttonText: 'Shop Now',
+                theme: 'gold',
+                autoOpen: true,
+                autoOpenDelay: 2000,
+                speed: 1500,
+                sparkles: true,
+                onComplete: function () {
+                    alert('🛒 Welcome to our Black Friday Sale! Start shopping with 50% off!');
+                }
+            });
+        }
+
+        function eventExample() {
+            CurtainEffect.init({
+                title: 'IISF 2025',
+                subtitle: 'India International Science Festival',
+                buttonText: 'Enter Festival',
+                theme: 'saffron',
+                sparkles: true,
+                sound: true,
+                speed: 3000,
+                onComplete: function () {
+                    alert('🎭 Welcome to IISF 2025! Explore the world of science and innovation!');
+                }
+            });
+        }
+
+        function portfolioExample() {
+            CurtainEffect.init({
+                title: 'John Doe',
+                subtitle: 'Creative Web Developer & Designer',
+                buttonText: 'View Portfolio',
+                theme: 'elegant',
+                sparkles: false,
+                speed: 2500,
+                onComplete: function () {
+                    alert('💼 Welcome to my portfolio! Let\'s create something amazing together.');
+                }
+            });
+        }
+
+        function restaurantExample() {
+            CurtainEffect.init({
+                title: 'Fine Dining Experience',
+                subtitle: 'Reserve your table for an unforgettable evening',
+                buttonText: 'Make Reservation',
+                theme: 'royal',
+                autoOpen: true,
+                autoOpenDelay: 4000,
+                sparkles: true,
+                speed: 2500,
+                onComplete: function () {
+                    alert('🍽️ Welcome to our restaurant! Ready to make a reservation?');
+                    // In real implementation: window.location.href = '/reservations';
+                }
+            });
+        }
+
+        function gamingExample() {
+            CurtainEffect.init({
+                title: 'Epic Game Launch',
+                subtitle: 'The adventure awaits - Are you ready?',
+                buttonText: 'Start Playing',
+                theme: 'default',
+                sparkles: true,
+                sound: true,
+                speed: 1800,
+                onComplete: function () {
+                    alert('🎮 Game On! Welcome to the ultimate gaming experience!');
+                }
+            });
+        }
+
+        function culturalExample() {
+            CurtainEffect.init({
+                title: 'Cultural Heritage',
+                subtitle: 'Discover the beauty of traditional art and culture',
+                buttonText: 'Explore Heritage',
+                theme: 'saffron',
+                sparkles: true,
+                speed: 3500,
+                onComplete: function () {
+                    alert('🏛️ Welcome to our cultural exhibition! Enjoy exploring our heritage.');
+                }
+            });
+        }
+    </script>
+
+    <!-- Footer Section -->
+    <div
+        style="background: rgba(0, 0, 0, 0.2); margin-top: 60px; padding: 40px 20px; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+        <div class="container">
+            <h3 style="color: #FFD700; margin-bottom: 20px;">🚀 Ready to Use This in Your Project?</h3>
+            <p style="font-size: 1.1rem; margin-bottom: 30px; opacity: 0.9;">
+                This curtain effect is completely <strong>free and open source</strong>.
+                Download it, customize it, and use it in your projects!
+            </p>
+
+            <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin: 30px 0;">
+                <a href="https://github.com/ramp00786/curtains-effect-js-and-css/archive/main.zip" class="github-link"
+                    style="background: #28a745;">
+                    <i class="fas fa-download"></i> Download ZIP
+                </a>
+                <a href="https://github.com/ramp00786/curtains-effect-js-and-css" target="_blank" class="github-link">
+                    <i class="fab fa-github"></i> View on GitHub
+                </a>
+                <a href="https://github.com/ramp00786/curtains-effect-js-and-css/issues" target="_blank"
+                    class="github-link" style="background: #dc3545;">
+                    <i class="fas fa-bug"></i> Report Issue
+                </a>
+            </div>
+
+            <div class="feature-list" style="margin: 40px 0;">
+                <div class="feature-item">
+                    <i class="fas fa-user-tie" style="color: #2196F3;"></i>
+                    <div>
+                        <strong>Created by:</strong> 
+                        <a href="https://www.linkedin.com/in/tulsiram-kushwah-software-engineer/" target="_blank" style="color: #FFD700; text-decoration: none;">
+                            Tulsiram Kushwah
+                        </a> - Software Engineer
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fab fa-linkedin" style="color: #0077B5;"></i>
+                    <div>
+                        <strong>LinkedIn:</strong> 
+                        <a href="https://www.linkedin.com/in/tulsiram-kushwah-software-engineer/" target="_blank" style="color: #FFD700; text-decoration: none;">
+                            Connect with Tulsiram
+                        </a>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fab fa-facebook" style="color: #1877F2;"></i>
+                    <div>
+                        <strong>Facebook:</strong> 
+                        <a href="https://www.facebook.com/ramp00786" target="_blank" style="color: #FFD700; text-decoration: none;">
+                            Follow on Facebook
+                        </a>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-heart" style="color: #e91e63;"></i>
+                    <div>
+                        <strong>Made with Love:</strong> Created for the web development community
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-code"></i>
+                    <div>
+                        <strong>Open Source:</strong> MIT License - Free for personal and commercial use
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-users"></i>
+                    <div>
+                        <strong>Community:</strong> Contributions and feedback welcome on GitHub
+                    </div>
+                </div>
+            </div>
+
+            <hr style="border: none; height: 1px; background: rgba(255, 255, 255, 0.1); margin: 30px 0;">
+
+            <p style="opacity: 0.7; font-size: 0.9rem;">
+                Created with ❤️ by 
+                <a href="https://www.linkedin.com/in/tulsiram-kushwah-software-engineer/" target="_blank" style="color: #FFD700; text-decoration: none;">
+                    <i class="fab fa-linkedin"></i> Tulsiram Kushwah
+                </a> • 
+                <a href="https://www.facebook.com/ramp00786" target="_blank" style="color: #FFD700; text-decoration: none;">
+                    <i class="fab fa-facebook"></i> Follow on Facebook
+                </a> • 
+                Icons by <a href="https://fontawesome.com/" target="_blank" style="color: #FFD700;">Font Awesome</a> •
+                <span style="color: #FFD700;">★</span> Star us on GitHub if you like this project!
+            </p>
+
+            <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.5;">
+                © 2025 Tulsiram Kushwah • Made with 🎭 for creating magical web experiences
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
