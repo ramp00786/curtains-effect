@@ -1,5 +1,5 @@
 /**
- * Web Component Curtain Effect
+ * Web Component Curtain Effect (ES Module Version)
  * Author: Tulsiram Kushwah
  * LinkedIn: https://www.linkedin.com/in/tulsiram-kushwah-software-engineer/
  * Facebook: https://www.facebook.com/ramp00786
@@ -393,11 +393,6 @@ if (!customElements.get('curtain-effect')) {
   customElements.define('curtain-effect', CurtainEffectElement);
 }
 
-// Export for module usage (only in module context)
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = CurtainEffectElement;
-} else if (typeof exports !== 'undefined') {
-  exports.CurtainEffectElement = CurtainEffectElement;
-} else if (typeof window !== 'undefined') {
-  window.CurtainEffectElement = CurtainEffectElement;
-}
+// Export for ES module usage
+export default CurtainEffectElement;
+export { CurtainEffectElement };

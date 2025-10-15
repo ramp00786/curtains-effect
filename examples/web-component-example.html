@@ -235,8 +235,18 @@
         </button>
     </div>
 
-    <!-- Load the Web Component -->
+    <!-- Load the Web Component (Choose one method) -->
+    
+    <!-- Method 1: Standard script (works everywhere) -->
     <script src="../dist/web-component/curtain-effect.js"></script>
+    
+    <!-- Method 2: ES Module (uncomment to use instead of Method 1) -->
+    <!--
+    <script type="module">
+        import CurtainEffect from '../dist/web-component/curtain-effect.esm.js';
+        // Component is automatically registered
+    </script>
+    -->
     
     <script>
         // Event logging
