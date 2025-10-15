@@ -5,14 +5,12 @@
  * Facebook: https://www.facebook.com/ramp00786
  */
 
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import CurtainEffect from './CurtainEffectStandalone.jsx';
 
 // This version includes inline styles to avoid CSS import issues with Vite
 // For custom styling, you can still import the CSS separately:
 // import 'curtain-opening-effect/react/css';
-
-// Additional React hooks for advanced usage
-import { useEffect, useRef, useState, useCallback } from 'react';
 
 /**
  * Custom hook for curtain effect control
@@ -58,15 +56,13 @@ export const withCurtainEffect = (WrappedComponent, curtainProps = {}) => {
     };
     
     if (showContent) {
-      return <WrappedComponent {...props} />;
+      return React.createElement(WrappedComponent, props);
     }
     
-    return (
-      <CurtainEffect
-        {...curtainProps}
-        onComplete={handleComplete}
-      />
-    );
+    return React.createElement(CurtainEffect, {
+      ...curtainProps,
+      onComplete: handleComplete
+    });
   };
 };
 
