@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Component Curtain Effect Example</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+        }
+        
+        .main-content {
+            padding: 2rem;
+            text-align: center;
+            color: #333;
+        }
+        
+        .main-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            color: #ff6b6b;
+        }
+        
+        .main-content p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        .feature-card {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card h3 {
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+        
+        .controls {
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .control-group {
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .control-group input, .control-group select {
+            padding: 0.5rem;
+            border: 2px solid #ff9a9e;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin: 0 0.5rem;
+        }
+        
+        .control-group button {
+            background: linear-gradient(45deg, #ff6b6b, #ff9a9e);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .control-group button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.3);
+        }
+        
+        .reset-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+        
+        .demo-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .demo-section h2 {
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+        
+        .event-log {
+            background: #333;
+            color: #00ff00;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main curtain effect -->
+    <curtain-effect 
+        id="mainCurtain"
+        title="Web Component Magic"
+        subtitle="Universal compatibility across all frameworks"
+        button-text="Enter Universal App"
+        theme="gold"
+        speed="3000"
+        sparkles="true">
+    </curtain-effect>
+
+    <!-- Main content (shown after curtain opens) -->
+    <div class="main-content">
+        <h1>🧩 Web Components Rock!</h1>
+        <p>
+            This curtain effect is built as a Web Component using the Custom Elements API. 
+            This means it works everywhere - vanilla JavaScript, React, Vue, Angular, 
+            or any other framework!
+        </p>
+        
+        <div class="features">
+            <div class="feature-card">
+                <h3>🌍 Universal</h3>
+                <p>Works with any framework or vanilla JavaScript - true framework agnostic</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎨 Shadow DOM</h3>
+                <p>Encapsulated styles that don't interfere with your existing CSS</p>
+            </div>
+            <div class="feature-card">
+                <h3>📡 Custom Events</h3>
+                <p>Dispatches custom events that you can listen to from any framework</p>
+            </div>
+            <div class="feature-card">
+                <h3>⚙️ Configurable</h3>
+                <p>All options available as HTML attributes for easy configuration</p>
+            </div>
+        </div>
+
+        <div class="controls">
+            <h2>🎛️ Live Demo Controls</h2>
+            <p>Experiment with different configurations and see the Web Component in action!</p>
+            
+            <div class="control-group">
+                <label>Title:</label>
+                <input type="text" id="titleInput" value="Web Component Magic" />
+                <button onclick="updateCurtain()">Update</button>
+            </div>
+            
+            <div class="control-group">
+                <label>Theme:</label>
+                <select id="themeSelect">
+                    <option value="default">Default</option>
+                    <option value="royal">Royal</option>
+                    <option value="elegant">Elegant</option>
+                    <option value="gold" selected>Gold</option>
+                    <option value="saffron">Saffron</option>
+                </select>
+                <button onclick="updateCurtain()">Apply Theme</button>
+            </div>
+            
+            <div class="control-group">
+                <label>Speed (ms):</label>
+                <input type="range" id="speedRange" min="1000" max="5000" value="3000" />
+                <span id="speedValue">3000ms</span>
+                <button onclick="updateCurtain()">Apply Speed</button>
+            </div>
+            
+            <div class="control-group">
+                <button onclick="resetCurtain()">🔄 Reset & Show Curtain</button>
+                <button onclick="createNewCurtain()">➕ Create New Curtain</button>
+                <button onclick="clearLog()">🗑️ Clear Event Log</button>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>📊 Event Monitoring</h2>
+            <p>Watch the custom events being fired by the Web Component:</p>
+            <div id="eventLog" class="event-log">
+                > Web Component Demo Ready...<br>
+                > Listening for curtain events...<br>
+            </div>
+        </div>
+
+        <button class="reset-button" onclick="resetCurtain()">
+            🎭 Show Curtain Again
+        </button>
+    </div>
+
+    <!-- Load the Web Component -->
+    <script src="../dist/web-component/curtain-effect.js"></script>
+    
+    <script>
+        // Event logging
+        function logEvent(message) {
+            const log = document.getElementById('eventLog');
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML += `> [${timestamp}] ${message}<br>`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // Listen for curtain events
+        document.addEventListener('curtain-open', (e) => {
+            logEvent(`🎪 Curtain opening event fired from element: ${e.detail.element.tagName}`);
+        });
+
+        document.addEventListener('curtain-complete', (e) => {
+            logEvent(`✅ Curtain complete event fired from element: ${e.detail.element.tagName}`);
+        });
+
+        // Update speed display
+        document.getElementById('speedRange').addEventListener('input', (e) => {
+            document.getElementById('speedValue').textContent = e.target.value + 'ms';
+        });
+
+        // Control functions
+        function updateCurtain() {
+            const curtain = document.getElementById('mainCurtain');
+            const title = document.getElementById('titleInput').value;
+            const theme = document.getElementById('themeSelect').value;
+            const speed = document.getElementById('speedRange').value;
+            
+            curtain.setAttribute('title', title);
+            curtain.setAttribute('theme', theme);
+            curtain.setAttribute('speed', speed);
+            
+            logEvent(`🔧 Updated curtain: title="${title}", theme="${theme}", speed="${speed}ms"`);
+        }
+
+        function resetCurtain() {
+            const curtain = document.getElementById('mainCurtain');
+            if (curtain.reset) {
+                curtain.reset();
+                logEvent('🔄 Main curtain reset and shown again');
+            }
+        }
+
+        function createNewCurtain() {
+            // Create a new curtain element dynamically
+            const newCurtain = document.createElement('curtain-effect');
+            newCurtain.setAttribute('title', 'Dynamic Curtain!');
+            newCurtain.setAttribute('subtitle', 'Created with JavaScript');
+            newCurtain.setAttribute('button-text', 'Open Dynamic');
+            newCurtain.setAttribute('theme', 'royal');
+            newCurtain.setAttribute('speed', '2000');
+            newCurtain.setAttribute('auto-open', 'true');
+            newCurtain.setAttribute('auto-open-delay', '1000');
+            
+            // Add event listeners
+            newCurtain.addEventListener('curtain-open', () => {
+                logEvent('🎭 Dynamic curtain opened!');
+            });
+            
+            newCurtain.addEventListener('curtain-complete', () => {
+                logEvent('✨ Dynamic curtain animation complete!');
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    if (newCurtain.parentNode) {
+                        newCurtain.parentNode.removeChild(newCurtain);
+                        logEvent('🗑️ Dynamic curtain removed');
+                    }
+                }, 3000);
+            });
+            
+            document.body.appendChild(newCurtain);
+            logEvent('➕ New dynamic curtain created and added to DOM');
+        }
+
+        function clearLog() {
+            document.getElementById('eventLog').innerHTML = '> Event log cleared...<br>';
+        }
+
+        // Initialize
+        logEvent('🚀 Web Component demo initialized');
+        logEvent('🎯 Try the controls above to see the Web Component in action!');
+    </script>
+</body>
+</html>

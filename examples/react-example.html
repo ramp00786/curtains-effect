@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Curtain Effect Example</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../dist/react/CurtainEffect.css">
+    
+    <!-- 
+        NOTE: This demo uses Babel in the browser for simplicity.
+        In production, use a proper build tool like Create React App, Vite, or Webpack
+        to precompile your JSX for better performance.
+    -->
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .main-content {
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .main-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .main-content p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        .feature-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .feature-card h3 {
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+        
+        .reset-button {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+        }
+        
+        /* Ensure curtain content is visible and clickable */
+        .curtain-container {
+            pointer-events: all !important;
+        }
+        
+        .curtain-content {
+            pointer-events: all !important;
+            z-index: 10005 !important;
+        }
+        
+        .curtain-button {
+            pointer-events: all !important;
+            z-index: 10006 !important;
+        }
+        
+        /* Debug outline - remove after fixing */
+        .curtain-content {
+            border: 2px solid yellow !important;
+        }
+        
+        .curtain-button {
+            border: 2px solid red !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback } = React;
+
+        // CurtainEffect component with forwardRef for proper ref handling
+        const CurtainEffect = React.forwardRef(({
+            title = "Welcome",
+            subtitle = "Click to Enter", 
+            buttonText = "Open Curtains",
+            theme = "default",
+            speed = 2000,
+            autoOpen = false,
+            autoOpenDelay = 5000,
+            sparkles = true,
+            sound = false,
+            leftCurtainImage = "",
+            rightCurtainImage = "",
+            onOpen = null,
+            onComplete = null,
+            className = "",
+            style = {},
+            children
+        }, ref) => {
+            console.log('🎭 CurtainEffect rendering with props:', { title, subtitle, buttonText, theme });
+            const [isOpen, setIsOpen] = useState(false);
+            const [isAnimating, setIsAnimating] = useState(false);
+            const curtainRef = useRef(null);
+            const sparkleIntervalRef = useRef(null);
+            const autoOpenTimeoutRef = useRef(null);
+
+            const createSparkles = useCallback(() => {
+                if (!sparkles || !curtainRef.current) return;
+                
+                const container = curtainRef.current;
+                const sparkle = document.createElement('div');
+                sparkle.className = 'curtain-sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                
+                container.appendChild(sparkle);
+                
+                setTimeout(() => {
+                    if (sparkle.parentNode) {
+                        sparkle.parentNode.removeChild(sparkle);
+                    }
+                }, 5000);
+            }, [sparkles]);
+
+            const handleOpen = useCallback(() => {
+                console.log('🚀 Button clicked! Current state:', { isAnimating, isOpen });
+                if (isAnimating || isOpen) {
+                    console.log('❌ Cannot open: already animating or open');
+                    return;
+                }
+                
+                console.log('✅ Opening curtains...');
+                setIsAnimating(true);
+                onOpen && onOpen();
+                
+                if (sparkles) {
+                    sparkleIntervalRef.current = setInterval(createSparkles, 200);
+                }
+                
+                setTimeout(() => {
+                    console.log('🎉 Curtains opened!');
+                    setIsOpen(true);
+                    setIsAnimating(false);
+                    
+                    if (sparkleIntervalRef.current) {
+                        clearInterval(sparkleIntervalRef.current);
+                        sparkleIntervalRef.current = null;
+                    }
+                    
+                    onComplete && onComplete();
+                }, speed);
+            }, [isAnimating, isOpen, onOpen, onComplete, sparkles, speed, createSparkles]);
+
+            useEffect(() => {
+                if (autoOpen && !isOpen && !isAnimating) {
+                    autoOpenTimeoutRef.current = setTimeout(handleOpen, autoOpenDelay);
+                }
+                
+                return () => {
+                    if (autoOpenTimeoutRef.current) {
+                        clearTimeout(autoOpenTimeoutRef.current);
+                        autoOpenTimeoutRef.current = null;
+                    }
+                };
+            }, [autoOpen, autoOpenDelay, handleOpen, isOpen, isAnimating]);
+
+            useEffect(() => {
+                return () => {
+                    if (sparkleIntervalRef.current) {
+                        clearInterval(sparkleIntervalRef.current);
+                    }
+                    if (autoOpenTimeoutRef.current) {
+                        clearTimeout(autoOpenTimeoutRef.current);
+                    }
+                };
+            }, []);
+
+            // Add reset method
+            const reset = useCallback(() => {
+                setIsOpen(false);
+                setIsAnimating(false);
+                if (sparkleIntervalRef.current) {
+                    clearInterval(sparkleIntervalRef.current);
+                    sparkleIntervalRef.current = null;
+                }
+            }, []);
+
+            // Combine refs - internal and forwarded
+            const combinedRef = useCallback((node) => {
+                curtainRef.current = node;
+                if (ref) {
+                    if (typeof ref === 'function') {
+                        ref(node);
+                    } else {
+                        ref.current = node;
+                    }
+                }
+            }, [ref]);
+
+            // Expose reset method via imperative handle
+            React.useImperativeHandle(ref, () => ({
+                reset,
+                open: handleOpen,
+                isOpen,
+                isAnimating
+            }), [reset, handleOpen, isOpen, isAnimating]);
+
+            if (isOpen) {
+                return children || null;
+            }
+
+            return (
+                <div 
+                    ref={combinedRef}
+                    className={`curtain-container curtain-theme-${theme} ${isAnimating ? 'opening' : ''} ${className}`}
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        zIndex: 10000,
+                        pointerEvents: 'all',
+                        ...style
+                    }}
+                >
+                    <div 
+                        className="curtain-panel curtain-left"
+                        style={leftCurtainImage ? { backgroundImage: `url(${leftCurtainImage})` } : {}}
+                    />
+                    
+                    <div 
+                        className="curtain-panel curtain-right"
+                        style={rightCurtainImage ? { backgroundImage: `url(${rightCurtainImage})` } : {}}
+                    />
+                    
+                    <div className="curtain-content" style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        textAlign: 'center',
+                        zIndex: 10005,
+                        pointerEvents: 'all',
+                        color: 'white'
+                    }}>
+                        <div className="curtain-text">
+                            <h1 className="curtain-title" style={{
+                                fontSize: '3rem',
+                                marginBottom: '1rem',
+                                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+                            }}>{title}</h1>
+                            <p className="curtain-subtitle" style={{
+                                fontSize: '1.2rem',
+                                marginBottom: '2rem',
+                                opacity: 0.9
+                            }}>{subtitle}</p>
+                        </div>
+                        <button 
+                            className="curtain-button"
+                            onClick={handleOpen}
+                            disabled={isAnimating}
+                            style={{
+                                background: 'linear-gradient(45deg, #FFD700, #FFA500)',
+                                color: '#000',
+                                border: 'none',
+                                padding: '1rem 2rem',
+                                fontSize: '1.1rem',
+                                fontWeight: 'bold',
+                                borderRadius: '50px',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                margin: '0 auto',
+                                pointerEvents: 'all',
+                                zIndex: 10006
+                            }}
+                        >
+                            <i className="fas fa-play"></i>
+                            {buttonText}
+                        </button>
+                    </div>
+                </div>
+            );
+        });
+
+        // Add display name for better debugging
+        CurtainEffect.displayName = 'CurtainEffect';
+
+        // Main App Component
+        const App = () => {
+            const [showCurtain, setShowCurtain] = useState(true);
+            const curtainRef = useRef(null);
+
+            const handleReset = () => {
+                if (curtainRef.current && curtainRef.current.reset) {
+                    curtainRef.current.reset();
+                } else {
+                    // Fallback to remounting
+                    setShowCurtain(false);
+                    setTimeout(() => {
+                        setShowCurtain(true);
+                    }, 100);
+                }
+            };
+
+            const handleComplete = () => {
+                console.log('🎭 Curtains opened! Welcome to React!');
+            };
+
+            return (
+                <>
+                    {showCurtain && (
+                        <CurtainEffect
+                            ref={curtainRef}
+                            title="React Curtain Effect"
+                            subtitle="Built with React Hooks & Modern CSS"
+                            buttonText="Enter React App"
+                            theme="royal"
+                            speed={2500}
+                            sparkles={true}
+                            onOpen={() => console.log('🎪 Opening curtains...')}
+                            onComplete={handleComplete}
+                        >
+                            <div className="main-content">
+                                <h1>🎭 Welcome to React!</h1>
+                                <p>
+                                    This beautiful curtain effect is now available as a React component! 
+                                    It uses modern React hooks for state management and provides a clean, 
+                                    reusable interface for any React application.
+                                </p>
+                                
+                                <div className="features">
+                                    <div className="feature-card">
+                                        <h3>⚛️ React Hooks</h3>
+                                        <p>Built with useState, useEffect, and useCallback for optimal performance</p>
+                                    </div>
+                                    <div className="feature-card">
+                                        <h3>🎨 Props Support</h3>
+                                        <p>Fully configurable through React props with TypeScript support</p>
+                                    </div>
+                                    <div className="feature-card">
+                                        <h3>🧹 Auto Cleanup</h3>
+                                        <p>Proper cleanup of intervals and timeouts on component unmount</p>
+                                    </div>
+                                    <div className="feature-card">
+                                        <h3>🔄 Lifecycle Events</h3>
+                                        <p>onOpen and onComplete callbacks for custom logic integration</p>
+                                    </div>
+                                </div>
+                                
+                                <button className="reset-button" onClick={handleReset}>
+                                    🔄 Reset Curtain Demo
+                                </button>
+                                
+                                <div style={{marginTop: '2rem', padding: '1rem', background: 'rgba(0,0,0,0.1)', borderRadius: '10px'}}>
+                                    <strong>✅ React Integration Features:</strong>
+                                    <ul style={{textAlign: 'left', maxWidth: '500px', margin: '1rem auto'}}>
+                                        <li>✅ forwardRef support for proper ref handling</li>
+                                        <li>✅ useImperativeHandle for method exposure</li>
+                                        <li>✅ Proper cleanup with useEffect dependencies</li>
+                                        <li>✅ TypeScript-ready prop definitions</li>
+                                        <li>✅ React DevTools friendly</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </CurtainEffect>
+                    )}
+                </>
+            );
+        };
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

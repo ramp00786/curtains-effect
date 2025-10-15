@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Curtain Effect Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../dist/vue/CurtainEffect.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #42b883 0%, #35495e 100%);
+            min-height: 100vh;
+        }
+        
+        .main-content {
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .main-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .main-content p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        .feature-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .feature-card h3 {
+            color: #42b883;
+            margin-bottom: 1rem;
+        }
+        
+        .reset-button {
+            background: linear-gradient(45deg, #42b883, #35495e);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(66,184,131,0.4);
+        }
+        
+        .demo-controls {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .demo-button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        const { createApp, ref, computed, onMounted, onUnmounted, watch } = Vue;
+
+        // CurtainEffect Component
+        const CurtainEffect = {
+            props: {
+                title: { type: String, default: 'Welcome' },
+                subtitle: { type: String, default: 'Click to Enter' },
+                buttonText: { type: String, default: 'Open Curtains' },
+                theme: { type: String, default: 'default' },
+                speed: { type: Number, default: 2000 },
+                autoOpen: { type: Boolean, default: false },
+                autoOpenDelay: { type: Number, default: 5000 },
+                sparkles: { type: Boolean, default: true },
+                sound: { type: Boolean, default: false },
+                leftCurtainImage: { type: String, default: '' },
+                rightCurtainImage: { type: String, default: '' },
+                className: { type: String, default: '' },
+                style: { type: Object, default: () => ({}) }
+            },
+            emits: ['open', 'complete'],
+            setup(props, { emit, slots }) {
+                const isOpen = ref(false);
+                const isAnimating = ref(false);
+                const curtainRef = ref(null);
+                
+                let sparkleInterval = null;
+                let autoOpenTimeout = null;
+                
+                const leftCurtainStyle = computed(() => {
+                    return props.leftCurtainImage 
+                        ? { backgroundImage: `url(${props.leftCurtainImage})` }
+                        : {};
+                });
+                
+                const rightCurtainStyle = computed(() => {
+                    return props.rightCurtainImage 
+                        ? { backgroundImage: `url(${props.rightCurtainImage})` }
+                        : {};
+                });
+                
+                const createSparkles = () => {
+                    if (!props.sparkles || !curtainRef.value) return;
+                    
+                    const container = curtainRef.value;
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'curtain-sparkle';
+                    sparkle.style.left = Math.random() * 100 + '%';
+                    sparkle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    
+                    container.appendChild(sparkle);
+                    
+                    setTimeout(() => {
+                        if (sparkle.parentNode) {
+                            sparkle.parentNode.removeChild(sparkle);
+                        }
+                    }, 5000);
+                };
+                
+                const handleOpen = () => {
+                    if (isAnimating.value || isOpen.value) return;
+                    
+                    isAnimating.value = true;
+                    emit('open');
+                    
+                    if (props.sparkles) {
+                        sparkleInterval = setInterval(createSparkles, 200);
+                    }
+                    
+                    setTimeout(() => {
+                        isOpen.value = true;
+                        isAnimating.value = false;
+                        
+                        if (sparkleInterval) {
+                            clearInterval(sparkleInterval);
+                            sparkleInterval = null;
+                        }
+                        
+                        emit('complete');
+                    }, props.speed);
+                };
+                
+                const reset = () => {
+                    isOpen.value = false;
+                    isAnimating.value = false;
+                    if (sparkleInterval) {
+                        clearInterval(sparkleInterval);
+                        sparkleInterval = null;
+                    }
+                };
+                
+                watch(
+                    () => [props.autoOpen, props.autoOpenDelay, isOpen.value, isAnimating.value],
+                    ([autoOpen, autoOpenDelay, currentIsOpen, currentIsAnimating]) => {
+                        if (autoOpenTimeout) {
+                            clearTimeout(autoOpenTimeout);
+                            autoOpenTimeout = null;
+                        }
+                        
+                        if (autoOpen && !currentIsOpen && !currentIsAnimating) {
+                            autoOpenTimeout = setTimeout(handleOpen, autoOpenDelay);
+                        }
+                    },
+                    { immediate: true }
+                );
+                
+                onUnmounted(() => {
+                    if (sparkleInterval) {
+                        clearInterval(sparkleInterval);
+                    }
+                    if (autoOpenTimeout) {
+                        clearTimeout(autoOpenTimeout);
+                    }
+                });
+                
+                return {
+                    isOpen,
+                    isAnimating,
+                    curtainRef,
+                    leftCurtainStyle,
+                    rightCurtainStyle,
+                    handleOpen,
+                    reset
+                };
+            },
+            template: `
+                <div v-if="!isOpen"
+                     ref="curtainRef"
+                     :class="[
+                         'curtain-container',
+                         'curtain-theme-' + theme,
+                         { 'opening': isAnimating },
+                         className
+                     ]"
+                     :style="style">
+                    
+                    <div class="curtain-panel curtain-left" :style="leftCurtainStyle"></div>
+                    <div class="curtain-panel curtain-right" :style="rightCurtainStyle"></div>
+                    
+                    <div class="curtain-content">
+                        <div class="curtain-text">
+                            <h1 class="curtain-title">{{ title }}</h1>
+                            <p class="curtain-subtitle">{{ subtitle }}</p>
+                        </div>
+                        <button class="curtain-button" @click="handleOpen" :disabled="isAnimating">
+                            <i class="fas fa-play"></i>
+                            {{ buttonText }}
+                        </button>
+                    </div>
+                </div>
+                <div v-else>
+                    <slot></slot>
+                </div>
+            `
+        };
+
+        // Main App
+        const App = {
+            components: {
+                CurtainEffect
+            },
+            setup() {
+                const showCurtain = ref(true);
+                const currentTheme = ref('elegant');
+                const curtainSpeed = ref(2500);
+                
+                const themes = ['default', 'royal', 'elegant', 'gold', 'saffron'];
+                
+                const handleReset = () => {
+                    showCurtain.value = false;
+                    setTimeout(() => {
+                        showCurtain.value = true;
+                    }, 100);
+                };
+                
+                const changeTheme = (theme) => {
+                    currentTheme.value = theme;
+                    handleReset();
+                };
+                
+                const changeSpeed = (speed) => {
+                    curtainSpeed.value = speed;
+                    handleReset();
+                };
+                
+                const handleComplete = () => {
+                    console.log('🎭 Vue curtains opened! Bienvenue!');
+                };
+                
+                return {
+                    showCurtain,
+                    currentTheme,
+                    curtainSpeed,
+                    themes,
+                    handleReset,
+                    changeTheme,
+                    changeSpeed,
+                    handleComplete
+                };
+            },
+            template: `
+                <curtain-effect
+                    v-if="showCurtain"
+                    :title="'Vue Curtain Effect'"
+                    :subtitle="'Built with Vue 3 Composition API'"
+                    :button-text="'Enter Vue App'"
+                    :theme="currentTheme"
+                    :speed="curtainSpeed"
+                    :sparkles="true"
+                    @open="() => console.log('🎪 Opening Vue curtains...')"
+                    @complete="handleComplete"
+                >
+                    <div class="main-content">
+                        <h1>🌿 Welcome to Vue 3!</h1>
+                        <p>
+                            This elegant curtain effect is now available as a Vue 3 component! 
+                            Built with the Composition API, it provides reactive state management 
+                            and clean, reusable code for any Vue application.
+                        </p>
+                        
+                        <div class="features">
+                            <div class="feature-card">
+                                <h3>🧩 Composition API</h3>
+                                <p>Built with Vue 3's Composition API for better logic reuse and organization</p>
+                            </div>
+                            <div class="feature-card">
+                                <h3>⚡ Reactive Props</h3>
+                                <p>All configuration options are reactive Vue props with validation</p>
+                            </div>
+                            <div class="feature-card">
+                                <h3>🎭 Custom Events</h3>
+                                <p>Emits custom events for seamless integration with parent components</p>
+                            </div>
+                            <div class="feature-card">
+                                <h3>🔧 Slots Support</h3>
+                                <p>Uses Vue slots for flexible content rendering after curtain opens</p>
+                            </div>
+                        </div>
+                        
+                        <div class="demo-controls">
+                            <div style="margin-bottom: 1rem;">
+                                <strong>Try Different Themes:</strong>
+                            </div>
+                            <button v-for="theme in themes" 
+                                    :key="theme" 
+                                    class="demo-button"
+                                    @click="changeTheme(theme)">
+                                {{ theme.charAt(0).toUpperCase() + theme.slice(1) }}
+                            </button>
+                        </div>
+                        
+                        <div class="demo-controls">
+                            <div style="margin-bottom: 1rem;">
+                                <strong>Try Different Speeds:</strong>
+                            </div>
+                            <button class="demo-button" @click="changeSpeed(1000)">Fast (1s)</button>
+                            <button class="demo-button" @click="changeSpeed(2500)">Normal (2.5s)</button>
+                            <button class="demo-button" @click="changeSpeed(4000)">Slow (4s)</button>
+                        </div>
+                        
+                        <button class="reset-button" @click="handleReset">
+                            🔄 Reset Curtain Demo
+                        </button>
+                    </div>
+                </curtain-effect>
+            `
+        };
+
+        // Create and mount the app
+        createApp(App).mount('#app');
+    </script>
+</body>
+</html>
