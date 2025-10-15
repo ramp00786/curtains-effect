@@ -1,32 +1,38 @@
 {
   "name": "curtain-opening-effect",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Beautiful curtain opening animation for websites - supports Vanilla JS, React, Vue, and Web Components",
   "main": "dist/vanilla/js/curtain-effect.js",
   "module": "dist/vanilla/js/curtain-effect.js",
   "types": "types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./types/index.d.ts",
       "import": "./dist/vanilla/js/curtain-effect.js",
       "require": "./dist/vanilla/js/curtain-effect.js"
     },
     "./vanilla": {
+      "types": "./types/index.d.ts",
       "import": "./dist/vanilla/js/curtain-effect.js",
       "require": "./dist/vanilla/js/curtain-effect.js"
     },
     "./react": {
+      "types": "./types/index.d.ts",
       "import": "./dist/react/index.js",
       "require": "./dist/react/index.js"
     },
     "./vue": {
+      "types": "./types/index.d.ts",
       "import": "./dist/vue/index.js",
       "require": "./dist/vue/index.js"
     },
     "./web-component": {
-      "import": "./dist/web-component/curtain-effect.js",
+      "types": "./types/index.d.ts",
+      "import": "./dist/web-component/curtain-effect.esm.js",
       "require": "./dist/web-component/curtain-effect.js"
     },
-    "./css": "./dist/vanilla/css/curtain-effect.css"
+    "./css": "./dist/vanilla/css/curtain-effect.css",
+    "./react/css": "./dist/react/CurtainEffect.css"
   },
   "files": [
     "dist/",
@@ -80,10 +86,14 @@
   "homepage": "https://github.com/ramp00786/curtains-effect#readme",
   "peerDependencies": {
     "react": ">=16.8.0",
+    "react-dom": ">=16.8.0",
     "vue": ">=3.0.0"
   },
   "peerDependenciesMeta": {
     "react": {
+      "optional": true
+    },
+    "react-dom": {
       "optional": true
     },
     "vue": {

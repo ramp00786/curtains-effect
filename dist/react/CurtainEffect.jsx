@@ -9,7 +9,6 @@
  */
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import './CurtainEffect.css';
 
 const CurtainEffect = React.forwardRef(({
@@ -189,23 +188,6 @@ const CurtainEffect = React.forwardRef(({
 // Add display name for debugging
 CurtainEffect.displayName = 'CurtainEffect';
 
-CurtainEffect.propTypes = {
-  title: PropTypes.string,
-  subtitle: PropTypes.string,
-  buttonText: PropTypes.string,
-  theme: PropTypes.oneOf(['default', 'royal', 'elegant', 'gold', 'saffron']),
-  speed: PropTypes.number,
-  autoOpen: PropTypes.bool,
-  autoOpenDelay: PropTypes.number,
-  sparkles: PropTypes.bool,
-  sound: PropTypes.bool,
-  leftCurtainImage: PropTypes.string,
-  rightCurtainImage: PropTypes.string,
-  onOpen: PropTypes.func,
-  onComplete: PropTypes.func,
-  className: PropTypes.string,
-  style: PropTypes.object,
-  children: PropTypes.node
-};
+// PropTypes are now handled by TypeScript definitions
 
 export default CurtainEffect;
