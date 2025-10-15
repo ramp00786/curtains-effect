@@ -5,7 +5,7 @@
  * Facebook: https://www.facebook.com/ramp00786
  */
 
-import CurtainEffect from './CurtainEffect.vue'
+import CurtainEffect from './CurtainEffectStandalone.vue'
 import { ref, computed, onUnmounted } from 'vue'
 
 /**

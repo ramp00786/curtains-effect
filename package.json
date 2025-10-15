@@ -1,6 +1,6 @@
 {
   "name": "curtain-opening-effect",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Beautiful curtain opening animation for websites - supports Vanilla JS, React, Vue, and Web Components",
   "main": "dist/vanilla/js/curtain-effect.js",
   "module": "dist/vanilla/js/curtain-effect.js",

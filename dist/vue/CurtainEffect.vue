@@ -50,12 +50,11 @@
     
     <!-- Audio element for sound effects -->
     <audio 
-      v-if="sound" 
+      v-if="sound && audioSrc" 
       ref="audioRef" 
       preload="auto"
     >
-      <source src="/curtain-assets/sounds/clapping.wav" type="audio/wav" />
-      <source src="/curtain-assets/sounds/fanfare.wav" type="audio/wav" />
+      <source :src="audioSrc" type="audio/wav" />
     </audio>
   </div>
   
@@ -124,6 +123,10 @@ export default {
     style: {
       type: Object,
       default: () => ({})
+    },
+    audioSrc: {
+      type: String,
+      default: ''
     }
   },
   emits: ['open', 'complete'],
